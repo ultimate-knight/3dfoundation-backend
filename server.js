@@ -1,5 +1,7 @@
 const express = require("express");
 require("dotenv").config();
+const {Resend}=require("resend")
+const resend=new Resend(process.env.RESEND_API_KEY)
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
@@ -8,6 +10,7 @@ const { dbconnect } = require("./db/db");
 const { error } = require("console");
 const nodemailer = require("nodemailer");
 const dns = require("dns");
+const { Network } = require("inspector");
 dns.setDefaultResultOrder("ipv4first");
 
 const app = express();
@@ -16,30 +19,28 @@ app.use(express.json());
 
 app.use(cors());
 
-console.log(process.env.user);
-console.log(process.env.password);
-
 const port = 9000;
 
 //nodemailer
-const transport = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-   port: 587,
-  secure: true,
-  auth: {
-    user: process.env.user,
-    pass: process.env.password,
-  },
-  family: 4
-});
+// const transport = nodemailer.createTransport({
+//   host: "smtp.gmail.com",
+//   port: 587,
+//   secure: false,
+//   auth: {
+//     user: process.env.user,
+//     pass: process.env.password,
+//   },
+//   family: 4,
+//   connectionTimeout: 10000,
+// });
 
-transport.verify((error) => {
-  if (error) {
-    console.log("nodemailer failed to connect", error.message);
-  } else {
-    console.log("nodemailer connected to the server");
-  }
-});
+// transport.verify((error) => {
+//   if (error) {
+//     console.log("nodemailer failed to connect", error.message);
+//   } else {
+//     console.log("nodemailer connected to the server");
+//   }
+// });
 
 // partnerships
 
@@ -54,8 +55,8 @@ app.post("/partnership", (req, res) => {
     [partnership, Name, phone, email, company, remarks],
     async (error, result) => {
       try {
-        await transport.sendMail({
-          from: process.env.user,
+        resend.emails.send({
+          from: "onboarding@resend.dev",
           to: process.env.user,
           subject: "email submitted for partnership program at 3dwebsoft",
           text: `
@@ -68,25 +69,25 @@ app.post("/partnership", (req, res) => {
                 `,
         });
 
-        await transport.sendMail({
-          from: process.env.user,
-          to: email,
-          subject: "email acknowledgement for partnership program at 3dwebsoft foundation",
-          text: `
-      Dear ${Name},
+      //   await transport.sendMail({
+      //     from: process.env.user,
+      //     to: email,
+      //     subject: "email acknowledgement for partnership program at 3dwebsoft foundation",
+      //     text: `
+      // Dear ${Name},
 
-      Thank you for contacting 3dwebsoft foundation 
-      regarding a partnership. 
-      We have received your email and will review it 
-      shortly. 
-      Our team will contact you soon.
+      // Thank you for contacting 3dwebsoft foundation 
+      // regarding a partnership. 
+      // We have received your email and will review it 
+      // shortly. 
+      // Our team will contact you soon.
 
-      Thank you,
+      // Thank you,
 
-      Yours sincerely,
-      3dwebsoft`,
-        });
-        res.json({ Message: "data added successfully" });
+      // Yours sincerely,
+      // 3dwebsoft`,
+      //   });
+      //   res.json({ Message: "data added successfully" });
       } catch (error) {
         if (error) {
           console.log("error", error.message);
@@ -147,8 +148,8 @@ app.post("/admission", (req, res) => {
     [city, student, contact, email, remarks, course],
     async (error, result) => {
     try {
-        await transport.sendMail({
-          from: process.env.user,
+        await resend.emails.send({
+          from: "onboarding@resend.dev",
           to: process.env.user,
           subject: "email submitted for admission program at 3dwebsoft foundation",
           text: `
@@ -161,27 +162,27 @@ app.post("/admission", (req, res) => {
                 `,
         });
 
-        await transport.sendMail({
-          from: process.env.user,
-          to: email,
-          subject: "email acknowledgement for admission program at 3dwebsoft foundation",
-          text: `
-      Dear ${student},
+      //   await transport.sendMail({
+      //     from: process.env.user,
+      //     to: email,
+      //     subject: "email acknowledgement for admission program at 3dwebsoft foundation",
+      //     text: `
+      // Dear ${student},
 
 
 
-      Thank you for contacting 3dwebsoft foundation 
-      regarding an admission. 
-      We have received your email and will review it 
-      shortly.
-      Our team will contact you soon.
+      // Thank you for contacting 3dwebsoft foundation 
+      // regarding an admission. 
+      // We have received your email and will review it 
+      // shortly.
+      // Our team will contact you soon.
 
-      Thank you,
+      // Thank you,
 
-      Yours sincerely,
-      3dwebsoft`,
-        });
-        res.json({ Message: "data added successfully" });
+      // Yours sincerely,
+      // 3dwebsoft`,
+      //   });
+      //   res.json({ Message: "data added successfully" });
       } catch (error) {
         if (error) {
           console.log("error", error.message);
@@ -232,8 +233,8 @@ app.post("/ngo", (req, res) => {
     [ngo, name, contact, city, email, remarks],
     async (error, result) => {
       try {
-        await transport.sendMail({
-          from: process.env.user,
+        resend.emails.send({
+          from: "onboarding@resend.dev",
           to: process.env.user,
           subject: "email submitted for ngo program at 3dwebsoft foundation",
           text: `
@@ -246,25 +247,25 @@ app.post("/ngo", (req, res) => {
                 `,
         });
 
-        await transport.sendMail({
-          from: process.env.user,
-          to: email,
-          subject: "email acknowledgement for ngo program at 3dwebsoft foundation",
-          text: `
-      Dear ${name},
+      //   await transport.sendMail({
+      //     from: process.env.user,
+      //     to: email,
+      //     subject: "email acknowledgement for ngo program at 3dwebsoft foundation",
+      //     text: `
+      // Dear ${name},
 
-      Thank you for contacting 3dwebsoft foundation 
-      regarding ngo program. 
-      We have received your email and will review it 
-      shortly.
-      Our team will contact you soon.
+      // Thank you for contacting 3dwebsoft foundation 
+      // regarding ngo program. 
+      // We have received your email and will review it 
+      // shortly.
+      // Our team will contact you soon.
 
-      Thank you,
+      // Thank you,
 
-      Yours sincerely,
-      3dwebsoft`,
-        });
-        res.json({ Message: "data added successfully" });
+      // Yours sincerely,
+      // 3dwebsoft`,
+      //   });
+      //   res.json({ Message: "data added successfully" });
       } catch (error) {
         if (error) {
           console.log("error", error.message);
@@ -317,8 +318,8 @@ app.post("/volunteer", (req, res) => {
     async (error, result) => {
 
         try {
-        await transport.sendMail({
-          from: process.env.user,
+        resend.emails.send({
+           from: "onboarding@resend.dev",
           to: process.env.user,
           subject: "email submitted for volunteer program at 3dwebsoft foundation",
           text: `
@@ -331,25 +332,25 @@ app.post("/volunteer", (req, res) => {
                 `,
         });
 
-        await transport.sendMail({
-          from: process.env.user,
-          to: email,
-          subject: "email acknowledgement for volunteer program at 3dwebsoft foundation",
-          text: `
-      Dear ${volunteer},
+      //   await transport.sendMail({
+      //     from: process.env.user,
+      //     to: email,
+      //     subject: "email acknowledgement for volunteer program at 3dwebsoft foundation",
+      //     text: `
+      // Dear ${volunteer},
 
-      Thank you for contacting 3dwebsoft foundation 
-      regarding volunteer program. 
-      We have received your email and will review it 
-      shortly.
-      Our team will contact you soon.
+      // Thank you for contacting 3dwebsoft foundation 
+      // regarding volunteer program. 
+      // We have received your email and will review it 
+      // shortly.
+      // Our team will contact you soon.
 
-      Thank you,
+      // Thank you,
 
-      Yours sincerely,
-      3dwebsoft`,
-        });
-        res.json({ Message: "data added successfully" });
+      // Yours sincerely,
+      // 3dwebsoft`,
+      //   });
+      //   res.json({ Message: "data added successfully" });
       } catch (error) {
         if (error) {
           console.log("error", error.message);
@@ -419,8 +420,8 @@ app.post("/newsletter", (req, res) => {
       }
 
       try {
-        await transport.sendMail({
-          from: process.env.user,
+        resend.emails.send({
+           from: "onboarding@resend.dev",
           to: process.env.user,
           subject: "email submitted for newsletter subscription at 3dwebsoft foundation",
           text: `
@@ -507,8 +508,8 @@ app.post("/enrollment", (req, res) => {
     async (error, result) => {
     
      try {
-        await transport.sendMail({
-          from: process.env.user,
+        resend.emails.send({
+           from: "onboarding@resend.dev",
           to: process.env.user,
           subject: "email submitted for enrollment program at 3dwebsoft foundation",
           text: `
@@ -521,25 +522,25 @@ app.post("/enrollment", (req, res) => {
                 `,
         });
 
-        await transport.sendMail({
-          from: process.env.user,
-          to: email,
-          subject: "email acknowledgement for enrollment program at 3dwebsoft foundation",
-          text: `
-      Dear ${name},
+      //   await transport.sendMail({
+      //     from: process.env.user,
+      //     to: email,
+      //     subject: "email acknowledgement for enrollment program at 3dwebsoft foundation",
+      //     text: `
+      // Dear ${name},
 
-      Thank you for contacting 3dwebsoft foundation 
-      regarding an enrollment program. 
-      We have received your email and will review it 
-      shortly.
-      Our team will contact you soon.
+      // Thank you for contacting 3dwebsoft foundation 
+      // regarding an enrollment program. 
+      // We have received your email and will review it 
+      // shortly.
+      // Our team will contact you soon.
 
-      Thank you,
+      // Thank you,
 
-      Yours sincerely,
-      3dwebsoft`,
-        });
-        res.json({ Message: "data added successfully" });
+      // Yours sincerely,
+      // 3dwebsoft`,
+      //   });
+      //   res.json({ Message: "data added successfully" });
       } catch (error) {
         if (error) {
           console.log("error", error.message);
