@@ -8,7 +8,7 @@ const path = require("path");
 const file = require("file");
 const { dbconnect } = require("./db/db");
 const { error } = require("console");
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
 const dns = require("dns");
 const { Network } = require("inspector");
 dns.setDefaultResultOrder("ipv4first");
@@ -87,7 +87,7 @@ app.post("/partnership", (req, res) => {
       // Yours sincerely,
       // 3dwebsoft`,
       //   });
-      //   res.json({ Message: "data added successfully" });
+        res.json({ Message: "data added successfully" });
       } catch (error) {
         if (error) {
           console.log("error", error.message);
@@ -181,8 +181,8 @@ app.post("/admission", (req, res) => {
 
       // Yours sincerely,
       // 3dwebsoft`,
-      //   });
-      //   res.json({ Message: "data added successfully" });
+        // });
+        res.json({ Message: "data added successfully" });
       } catch (error) {
         if (error) {
           console.log("error", error.message);
@@ -265,7 +265,7 @@ app.post("/ngo", (req, res) => {
       // Yours sincerely,
       // 3dwebsoft`,
       //   });
-      //   res.json({ Message: "data added successfully" });
+        res.json({ Message: "data added successfully" });
       } catch (error) {
         if (error) {
           console.log("error", error.message);
@@ -350,7 +350,7 @@ app.post("/volunteer", (req, res) => {
       // Yours sincerely,
       // 3dwebsoft`,
       //   });
-      //   res.json({ Message: "data added successfully" });
+        res.json({ Message: "data added successfully" });
       } catch (error) {
         if (error) {
           console.log("error", error.message);
@@ -429,23 +429,23 @@ app.post("/newsletter", (req, res) => {
                 `,
         });
 
-        await transport.sendMail({
-          from: process.env.user,
-          to: email,
-          subject: "email acknowledgement for subscription at 3dwebsoft foundation newsletter",
-          text: `
-    Hi,
+    //     await transport.sendMail({
+    //       from: process.env.user,
+    //       to: email,
+    //       subject: "email acknowledgement for subscription at 3dwebsoft foundation newsletter",
+    //       text: `
+    // Hi,
 
-    Thank you for subscribing newsletter
-    for 3dwebsoft foundation.
-    Stay tuned for more updates
-    from newsletter.
+    // Thank you for subscribing newsletter
+    // for 3dwebsoft foundation.
+    // Stay tuned for more updates
+    // from newsletter.
 
-    Thank you,
+    // Thank you,
 
-    Yours sincerely,
-    3dwebsoft`,
-        });
+    // Yours sincerely,
+    // 3dwebsoft`,
+    //     });
 
         return res.status(200).json({ message: "data added successfully" });
       } catch (error) {
