@@ -1,6 +1,7 @@
 const express = require("express");
 require("dotenv").config();
 const {Resend}=require("resend")
+console.log("KEY CHECK:", process.env.RESEND_API_KEY ? "loaded, length " + process.env.RESEND_API_KEY.length : "MISSING");
 const resend=new Resend(process.env.RESEND_API_KEY)
 const cors = require("cors");
 const multer = require("multer");
@@ -8,7 +9,7 @@ const path = require("path");
 const file = require("file");
 const { dbconnect } = require("./db/db");
 const { error } = require("console");
-// const nodemailer = require("nodemailer");
+
 const dns = require("dns");
 const { Network } = require("inspector");
 dns.setDefaultResultOrder("ipv4first");
