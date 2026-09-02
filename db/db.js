@@ -24,13 +24,21 @@ const dbconnect=sql.createPool({
 
 console
 
-dbconnect.connect((err)=>{
-    if(err){
-        console.log(err.message)
-    }
+// dbconnect.query((err,result)=>{
+//     if(err){
+//         console.log(err.message)
+//     }
 
-    console.log("database connected successfully")
-})
+//     console.log("database connected successfully")
+// })
+
+dbconnect.query("SELECT 1", (err) => {
+  if (err) {
+    console.log("database connection failed", err.message);
+  } else {
+    console.log("database connected successfully");
+  }
+});
 
 
 module.exports={dbconnect}
