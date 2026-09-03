@@ -541,7 +541,7 @@ app.post("/enrollment", (req, res) => {
       // Yours sincerely,
       // 3dwebsoft`,
       //   });
-      //   res.json({ Message: "data added successfully" });
+        res.json({ Message: "data added successfully" });
       } catch (error) {
         if (error) {
           console.log("error", error.message);
